@@ -32,7 +32,7 @@ css/style.css        design system, placeholders, responsive + reduced-motion ru
 js/main.js           GSAP ScrollTrigger scenes, loader, cursor, lightbox, particles
 assets/img/          chapter illustrations
 assets/svg/          (reserved — motifs are inlined in index.html)
-assets/audio/        optional ambient track (bring your own, off by default)
+assets/audio/        ambient soundtrack, played on demand from the audio control
 IMAGE_PROMPTS.md      full prompt list used to generate every illustration
 ```
 
