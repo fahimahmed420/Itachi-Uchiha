@@ -6,7 +6,11 @@ Scroll through his life — from a child watching a war he didn't start, to the 
 
 ## Live demo
 
-Open `index.html` in a browser, or serve the folder with any static server:
+[Visit the live website](https://itachi--uchiha.vercel.app/)
+
+![Itachi Uchiha story website preview](assets/Itachi%20Uchiha.PNG)
+
+You can also open `index.html` in a browser, or serve the folder with any static server:
 
 ```bash
 npx serve .
