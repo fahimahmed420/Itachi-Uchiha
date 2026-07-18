@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ITACHI — A Life in the Shadows</title>
+<meta name="description" content="A scrollytelling tribute to the life of Itachi Uchiha. Unofficial fan project.">
+<meta property="og:title" content="ITACHI — A Life in the Shadows">
+<meta property="og:description" content="Scroll through the full life story of Itachi Uchiha, told in ink and red.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;600;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23c3122f'/%3E%3Ccircle cx='50' cy='50' r='12' fill='%23000'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<!-- ══════════ LOADER ══════════ -->
+<div id="loader" aria-hidden="true">
+  <svg class="loader-sharingan" viewBox="0 0 120 120">
+    <circle class="l-iris" cx="60" cy="60" r="54" fill="none" stroke="var(--red)" stroke-width="3"/>
+    <circle class="l-ring" cx="60" cy="60" r="34" fill="none" stroke="var(--red)" stroke-width="2" opacity=".7"/>
+    <circle class="l-pupil" cx="60" cy="60" r="9" fill="var(--red)"/>
+    <g class="l-tomoe-group">
+      <g class="l-tomoe" transform="rotate(0 60 60)"><circle cx="60" cy="26" r="6" fill="var(--red)"/><path d="M60 20 q10 4 6 14 q-2 -6 -6 -8 z" fill="var(--red)"/></g>
+      <g class="l-tomoe" transform="rotate(120 60 60)"><circle cx="60" cy="26" r="6" fill="var(--red)"/><path d="M60 20 q10 4 6 14 q-2 -6 -6 -8 z" fill="var(--red)"/></g>
+      <g class="l-tomoe" transform="rotate(240 60 60)"><circle cx="60" cy="26" r="6" fill="var(--red)"/><path d="M60 20 q10 4 6 14 q-2 -6 -6 -8 z" fill="var(--red)"/></g>
+    </g>
+  </svg>
+  <p class="loader-text">開眼<span>opening the eye</span><span id="loader-pct">0%</span></p>
+</div>
+
+<!-- ══════════ FIXED UI ══════════ -->
+<div id="grain" aria-hidden="true"></div>
+<div id="flash" aria-hidden="true"></div>
+<div id="dimmer" aria-hidden="true"></div>
+<div id="cursor" aria-hidden="true"><span class="c-dot"></span><span class="c-ring"><span class="c-spin"><i></i><i></i><i></i></span></span></div>
+
+<svg id="progress-eye" viewBox="0 0 60 60" aria-hidden="true" title="story progress">
+  <circle cx="30" cy="30" r="26" fill="#0a0a0a" stroke="#3a3a3a" stroke-width="1.5"/>
+  <circle id="prog-ring" cx="30" cy="30" r="26" fill="none" stroke="var(--red)" stroke-width="2.5"
+          stroke-dasharray="163.36" stroke-dashoffset="163.36" transform="rotate(-90 30 30)"/>
+  <circle cx="30" cy="30" r="5" fill="var(--red)"/>
+  <g id="prog-tomoe">
+    <g class="p-tomoe" transform="rotate(0 30 30)"><circle cx="30" cy="15" r="3.4" fill="var(--red)"/><path d="M30 11.5 q6 2.5 3.5 8.5 q-1 -3.5 -3.5 -5 z" fill="var(--red)"/></g>
+    <g class="p-tomoe" transform="rotate(120 30 30)"><circle cx="30" cy="15" r="3.4" fill="var(--red)"/><path d="M30 11.5 q6 2.5 3.5 8.5 q-1 -3.5 -3.5 -5 z" fill="var(--red)"/></g>
+    <g class="p-tomoe" transform="rotate(240 30 30)"><circle cx="30" cy="15" r="3.4" fill="var(--red)"/><path d="M30 11.5 q6 2.5 3.5 8.5 q-1 -3.5 -3.5 -5 z" fill="var(--red)"/></g>
+  </g>
+  <g id="prog-mangekyo" opacity="0">
+    <path d="M30 30 L14 21 A18 18 0 0 1 41 15 Z" fill="var(--red)"/>
+    <path d="M30 30 L14 21 A18 18 0 0 1 41 15 Z" fill="var(--red)" transform="rotate(120 30 30)"/>
+    <path d="M30 30 L14 21 A18 18 0 0 1 41 15 Z" fill="var(--red)" transform="rotate(240 30 30)"/>
+    <circle cx="30" cy="30" r="4" fill="#0a0a0a"/>
+  </g>
+</svg>
+
+<div id="eye-tip" aria-hidden="true"></div>
+<nav id="chapnav" aria-label="Chapters"></nav>
+
+<button id="audio-btn" aria-label="Toggle ambient music" hidden>
+  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor" stroke="none"/>
+    <path class="wave" d="M15.5 8.5a5 5 0 0 1 0 7"/>
+    <path class="wave" d="M18 6a8.5 8.5 0 0 1 0 12"/>
+    <line class="mute-line" x1="4" y1="4" x2="20" y2="20" stroke="var(--red)"/>
+  </svg>
+</button>
+<audio id="ambient" src="assets/audio/ambient.mp3" loop preload="metadata"></audio>
+
+<main id="story">
+
+<!-- ══════════ 1 · HERO ══════════ -->
+<section class="sec sec-hero" id="hero" data-chapter="Prologue" data-kanji="鼬">
+  <div class="hero-moon" aria-hidden="true">
+    <figure class="ph ph-cover" data-k="月">
+      <img src="assets/img/hero-moon.png" alt="A blood-red moon over a sleeping village, crows crossing its face" onerror="this.remove()">
+    </figure>
+  </div>
+  <div class="hero-feathers" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <p class="hero-kicker">an unofficial fan tribute · a story told in ink and red</p>
+    <h1 class="hero-title" aria-label="ITACHI">ITACHI</h1>
+    <p class="hero-sub">うちはイタチ — the shinobi who chose the shadows</p>
+    <p class="hero-quote">“A life lived in darkness, for a village that would never know.”</p>
+  </div>
+  <div class="scroll-cue" aria-hidden="true"><span></span>scroll to begin</div>
+</section>
+
+<!-- ══════════ 2 · BORN INTO WAR ══════════ -->
+<section class="sec sec-war" id="ch-war" data-chapter="Born Into War" data-kanji="戦">
+  <div class="pin-stage war-stage">
+    <figure class="ph ph-cover war-bg" data-k="戦">
+      <img src="assets/img/ch01-war.png" alt="A small boy overlooking a smoking battlefield" loading="lazy" onerror="this.remove()">
+    </figure>
+    <div class="war-steps">
+      <div class="step"><h2 class="chap-title"><em>Chapter I</em>Born Into War</h2>
+        <p>June 9th. The Third Great Ninja War is burning through the land when, in the Uchiha clan, a boy is born.</p></div>
+      <div class="step"><p>He is four years old when his father shows him a battlefield.</p></div>
+      <div class="step"><p class="big-line">The corpses. The ash. The cost.</p></div>
+      <div class="step" data-delay>
+        <figure class="ph ph-portrait war-child" data-k="子">
+          <img src="assets/img/ch01-child.png" alt="Close-up of a traumatized child, fires reflected in his eyes" loading="lazy" onerror="this.remove()">
+        </figure>
+        <p>Something in the child breaks that day — and something is decided. He will spend his whole life ending war.<br><strong>Whatever it costs him.</strong></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 3 · THE PRODIGY ══════════ -->
+<section class="sec sec-prodigy" id="ch-prodigy" data-chapter="The Prodigy" data-kanji="天">
+  <header class="chap-head" data-reveal>
+    <h2 class="chap-title"><em>Chapter II</em>The Prodigy</h2>
+    <p>The village has never seen talent like this. It never asks what the talent is costing the boy.</p>
+  </header>
+  <div class="timeline-pin">
+    <div class="timeline-track">
+      <article class="tcard" data-age="7">
+        <figure class="ph" data-k="学" style="--ar:16/9"><img src="assets/img/ch02-training.png" alt="A boy throwing shuriken in a moonlit forest" loading="lazy" onerror="this.remove()"></figure>
+        <h3>Age 7</h3><p>Graduates the Academy in a single year — top of his class.</p>
+      </article>
+      <article class="tcard" data-age="8">
+        <figure class="ph" data-k="眼" style="--ar:1/1"><img src="assets/img/ch02-eye.png" alt="An eye awakening the red Sharingan" loading="lazy" onerror="this.remove()"></figure>
+        <h3>Age 8</h3><p>Awakens the Sharingan.</p>
+      </article>
+      <article class="tcard" data-age="10">
+        <figure class="ph" data-k="中" style="--ar:16/9"><img src="assets/img/ch02-chunin.png" alt="A calm ten-year-old standing over defeated older opponents in an exam arena" loading="lazy" onerror="this.remove()"></figure>
+        <h3>Age 10</h3><p>Chūnin. He fights like a veteran of a hundred battles.</p>
+      </article>
+      <article class="tcard" data-age="11">
+        <figure class="ph" data-k="暗" style="--ar:16/9"><img src="assets/img/ch02-anbu11.png" alt="An eleven-year-old kneeling to receive a porcelain ANBU mask" loading="lazy" onerror="this.remove()"></figure>
+        <h3>Age 11</h3><p>ANBU — the village's blade in the dark.</p>
+      </article>
+      <article class="tcard" data-age="13">
+        <figure class="ph" data-k="隊" style="--ar:2/3"><img src="assets/img/ch02-anbu.png" alt="A thirteen-year-old ANBU captain holding a porcelain mask" loading="lazy" onerror="this.remove()"></figure>
+        <h3>Age 13</h3><p>ANBU Captain. A child carrying secrets of state.</p>
+      </article>
+    </div>
+    <div class="age-line" aria-hidden="true"><span>7</span><div class="al-track"><div class="al-fill"></div></div><span>13</span></div>
+  </div>
+  <div class="poke-vignette" data-reveal>
+    <figure class="ph ph-portrait" data-k="弟"><img src="assets/img/ch02-poke.png" alt="Itachi gently poking young Sasuke's forehead" loading="lazy" onerror="this.remove()"></figure>
+    <p>And yet at home, he is only ever one thing: <strong>a big brother.</strong></p>
+    <blockquote class="quote">“Forgive me, Sasuke. Maybe next time.”</blockquote>
+  </div>
+</section>
+
+<!-- ══════════ 4 · SHISUI ══════════ -->
+<section class="sec sec-shisui" id="ch-shisui" data-chapter="Shisui" data-kanji="友">
+  <div class="pin-stage shisui-stage">
+    <figure class="ph ph-cover" data-k="川">
+      <img src="assets/img/ch03-shisui.png" alt="Two friends on a cliff above the Naka River at dusk" loading="lazy" onerror="this.remove()">
+    </figure>
+    <svg class="crow-fly" viewBox="0 0 100 60" aria-hidden="true">
+      <path d="M50 30 Q35 12 8 18 Q30 22 42 32 Q30 42 12 46 Q38 46 50 34 Q62 46 88 46 Q70 42 58 32 Q70 22 92 18 Q65 12 50 30 Z" fill="#0a0a0a"/>
+    </svg>
+    <div class="shisui-steps">
+      <div class="step"><h2 class="chap-title"><em>Chapter III</em>Shisui</h2>
+        <p>Shisui Uchiha. His best friend. The brother he chose for himself.</p></div>
+      <div class="step"><p>Together they dream of a village where clan and Leaf are one — and swear to protect it without bloodshed.</p></div>
+      <div class="step"><p>But Danzō does not believe in dreams. To use Shisui's power for himself, he steals one of his eyes.</p></div>
+      <div class="step"><p>Entrusting his last eye to Itachi, Shisui steps backward off the cliff — into the Naka River.</p></div>
+      <div class="step">
+        <figure class="ph" data-k="眼" style="--ar:1/1;max-width:260px"><img src="assets/img/ch03-mangekyo.png" alt="A tear-filled eye awakening the pinwheel Mangekyō Sharingan" loading="lazy" onerror="this.remove()"></figure>
+        <p class="big-line">That night, grief carves Itachi's eyes into something new:<br><strong class="red">the Mangekyō Sharingan.</strong></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 5 · THE COUP ══════════ -->
+<section class="sec sec-coup" id="ch-coup" data-chapter="The Coup" data-kanji="岐">
+  <header class="chap-head" data-reveal>
+    <h2 class="chap-title"><em>Chapter IV</em>The Coup</h2>
+  </header>
+  <div class="coup-split">
+    <div class="coup-panel coup-left"><span class="coup-crest">⽕</span><p>The clan — humiliated, watched, cornered — plans a coup d'état.</p></div>
+    <div class="coup-panel coup-right"><span class="coup-crest">木</span><p>The village quietly prepares to answer in blood.</p></div>
+  </div>
+  <figure class="ph coup-fig" data-k="岐" data-reveal style="--ar:16/9">
+    <img src="assets/img/ch04-divide.png" alt="Itachi standing small between the banners of clan and village" loading="lazy" onerror="this.remove()">
+  </figure>
+  <div class="coup-text" data-reveal>
+    <p>Between them stands one boy — barely a teenager — spying for both sides, begging both to stop.</p>
+    <p>Then Danzō offers him the arithmetic of hell:</p>
+    <p class="big-line">Let civil war consume everyone he loves —<br>or cut the clan down himself, and save exactly <strong class="red">one life</strong>.<br>His little brother's.</p>
+  </div>
+</section>
+
+<!-- ══════════ 6 · THE MASSACRE ══════════ -->
+<section class="sec sec-massacre" id="ch-massacre" data-chapter="The Massacre" data-kanji="月">
+  <div class="pin-stage moon-stage">
+    <figure class="ph ph-cover moon-fig" data-k="月">
+      <img src="assets/img/ch05-moon-wide.png" alt="A cloaked silhouette crouched on a pole before a huge blood moon" loading="lazy" onerror="this.onerror=function(){this.remove()}; this.src='assets/img/ch05-moon.png';">
+    </figure>
+    <div class="moon-caption"><h2 class="chap-title"><em>Chapter V</em>The Night</h2>
+      <p>One night. One order. One choice that can never be taken back.</p></div>
+  </div>
+  <div class="cut-panels">
+    <img class="cut-bg" src="assets/img/ch05-parents.png" alt="" aria-hidden="true" loading="lazy" onerror="this.remove()">
+    <div class="cut" data-reveal><p>He asks to bear it alone — so no other hand is stained.</p></div>
+    <div class="cut" data-reveal><p>His parents do not run. They tell him they are proud.<br>They call him <em>a kind child</em>.</p></div>
+    <div class="cut" data-reveal data-dim><p class="big-line red">Only Sasuke is left.</p></div>
+  </div>
+  <div class="tsukuyomi" data-invert>
+    <figure class="ph ph-portrait" data-k="幻"><img src="assets/img/ch05-tears.png" alt="Itachi crying in the rain, one Mangekyō eye glowing" loading="lazy" onerror="this.remove()"></figure>
+    <div class="tsu-text" data-reveal>
+      <p>For Sasuke to be spared, the elders' story must hold. So Itachi becomes the monster his brother needs to hate.</p>
+      <blockquote class="quote">“Hate me. Detest me. Survive.”</blockquote>
+    </div>
+  </div>
+  <figure class="ph gate-fig" data-k="門" data-reveal style="--ar:16/9">
+    <img src="assets/img/ch05-gate.png" alt="A lone figure leaving the great village gates in the rain" loading="lazy" onerror="this.remove()">
+  </figure>
+  <p class="gate-line" data-reveal>He walks out of the village he just saved — a criminal in its history books,<br>crying where no one can see.</p>
+</section>
+
+<!-- ══════════ 7 · RED CLOUDS ══════════ -->
+<section class="sec sec-akatsuki" id="ch-akatsuki" data-chapter="Red Clouds" data-kanji="暁">
+  <div class="cloud-layer c1" aria-hidden="true"></div>
+  <div class="cloud-layer c2" aria-hidden="true"></div>
+  <header class="chap-head" data-reveal>
+    <h2 class="chap-title"><em>Chapter VI</em>Red Clouds</h2>
+    <p>He joins the Akatsuki — an organization of S-rank criminals — to watch it from within.</p>
+  </header>
+  <figure class="ph kenburns" data-k="暁" data-reveal style="--ar:16/9">
+    <img src="assets/img/ch06-akatsuki.png" alt="Itachi and Kisame walking a misty road in Akatsuki cloaks" loading="lazy" onerror="this.remove()">
+  </figure>
+  <div class="chap-text" data-reveal>
+    <p>Beside the swordsman Kisame, he wears the red clouds of a wanted man.</p>
+    <p>To the world he is the clan-killer. In truth he is still Konoha's agent — and still Sasuke's shield. One quiet warning is all it takes to keep Danzō's hands off his brother:</p>
+    <blockquote class="quote">“Touch him, and everything I know goes to every enemy you have.”</blockquote>
+  </div>
+</section>
+
+<!-- ══════════ 8 · THE RETURN ══════════ -->
+<section class="sec sec-return" id="ch-return" data-chapter="The Return" data-kanji="帰">
+  <header class="chap-head" data-reveal>
+    <h2 class="chap-title"><em>Chapter VII</em>The Return</h2>
+    <p>Three years later he walks back through the Leaf's gates — officially, “hunting the Nine-Tails.”</p>
+  </header>
+  <figure class="ph" data-k="帰" data-invert data-reveal style="--ar:16/9">
+    <img src="assets/img/ch07-return.png" alt="Two Akatsuki figures walking calmly through the silent village streets" loading="lazy" onerror="this.onerror=function(){this.remove()}; this.src='assets/img/ch07-genjutsu.png';">
+  </figure>
+  <div class="chap-text" data-reveal>
+    <p>He breaks the famous Copy Ninja, Kakashi, with three seconds of Tsukuyomi — then leaves without taking anything at all.</p>
+    <p class="big-line">The real message is for the elders:<br><strong>I am alive. I remember. Keep your promise.</strong></p>
+  </div>
+</section>
+
+<!-- ══════════ 9 · BROTHERS' WAR ══════════ -->
+<section class="sec sec-brothers" id="ch-brothers" data-chapter="Brothers' War" data-kanji="兄">
+  <header class="chap-head" data-reveal>
+    <h2 class="chap-title"><em>Chapter VIII</em>Brothers' War</h2>
+    <p>Sasuke comes for him at last — raised on hatred, trained for exactly one purpose.</p>
+  </header>
+  <div class="battle-panels">
+    <figure class="ph bp" data-k="戦" data-reveal style="--ar:16/9">
+      <img src="assets/img/ch08-clash.png" alt="The brothers clash — lightning against black flames" loading="lazy" onerror="this.remove()">
+    </figure>
+    <figure class="ph bp ph-portrait" data-k="須" data-reveal>
+      <img src="assets/img/ch08-susanoo.png" alt="A spectral giant warrior surrounds the kneeling Itachi" loading="lazy" onerror="this.remove()">
+    </figure>
+  </div>
+  <div class="chap-text" data-reveal data-kirin>
+    <p>Amaterasu. Susanoo. A dragon of lightning called down from the sky.</p>
+    <p>What Sasuke doesn't know: his brother is already dying — nearly blind, riddled with illness, on his feet by will alone.</p>
+    <p>And every single move is a gift disguised as war — burning Orochimaru out of Sasuke's body, sealing away the curse, emptying a heart that never once held hatred for him.</p>
+  </div>
+  <div class="finalpoke" data-reveal>
+    <figure class="ph" data-k="兄" style="--ar:16/9">
+      <img src="assets/img/ch08-finalpoke.png" alt="Dying, Itachi presses two fingers to Sasuke's forehead" loading="lazy" onerror="this.remove()">
+    </figure>
+    <blockquote class="quote">“Forgive me, Sasuke. ……There won't be a next time.”</blockquote>
+    <p class="big-line">He dies smiling.</p>
+  </div>
+</section>
+
+<!-- ══════════ 10 · THE TRUTH ══════════ -->
+<section class="sec sec-truth" id="ch-truth" data-chapter="The Truth" data-kanji="真">
+  <header class="chap-head" data-reveal>
+    <h2 class="chap-title"><em>Chapter IX</em>The Truth</h2>
+    <p>Then Obito tells Sasuke everything — and the world turns inside out.</p>
+  </header>
+  <div class="memory-row">
+    <figure class="ph ph-portrait memory" data-k="憶" data-reveal><img src="assets/img/ch02-poke.png" alt="The brother who tucked him in" loading="lazy" onerror="this.remove()"><figcaption>the brother who raised him—</figcaption></figure>
+    <figure class="ph ph-portrait memory" data-k="憶" data-reveal><img src="assets/img/ch05-tears.png" alt="The monster of that night was crying" loading="lazy" onerror="this.remove()"><figcaption>—the monster of that night—</figcaption></figure>
+    <figure class="ph memory wide" data-k="憶" data-reveal style="--ar:16/9"><img src="assets/img/ch08-finalpoke.png" alt="The same man, protecting him both times" loading="lazy" onerror="this.remove()"><figcaption>—were the same man, protecting him both times.</figcaption></figure>
+  </div>
+  <p class="big-line" data-reveal>The world called it a massacre.<br>It was a shield — carried for eight years, <strong class="red">alone</strong>.</p>
+</section>
+
+<!-- ══════════ 11 · REANIMATION ══════════ -->
+<section class="sec sec-edo" id="ch-edo" data-chapter="Reanimation" data-kanji="転">
+  <header class="chap-head" data-reveal>
+    <h2 class="chap-title"><em>Chapter X</em>Reanimation</h2>
+    <p>The Fourth Great War. A forbidden jutsu drags legends out of the grave — Itachi among them, a puppet on Kabuto's strings.</p>
+  </header>
+  <div class="edo-row">
+    <figure class="ph ph-portrait edo-fig" data-k="転" data-reveal>
+      <img src="assets/img/ch11-edo.png" alt="The reanimated Itachi, cracked skin and red eyes, at peace" loading="lazy" onerror="this.remove()">
+    </figure>
+    <div class="chap-text" data-reveal>
+      <figure class="ph edo-crow" data-k="烏" style="--ar:1/1"><img src="assets/img/ch03-crow.png" alt="Shisui's crow in flight, one eye glowing red" loading="lazy" onerror="this.remove()"></figure>
+      <p>But years ago he hid a failsafe inside a crow: Shisui's eye, keyed to one command — <em>protect the Leaf</em>. It cuts his strings.</p>
+      <p>For one impossible day, the brothers fight side by side, and Izanami closes like a trap around the war's puppeteer.</p>
+      <blockquote class="quote big">“I am Itachi Uchiha, <span class="red">of the Hidden Leaf.</span>”</blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 12 · FAREWELL ══════════ -->
+<section class="sec sec-farewell" id="ch-farewell" data-chapter="Farewell" data-kanji="別">
+  <header class="chap-head" data-reveal>
+    <h2 class="chap-title"><em>Chapter XI</em>Farewell</h2>
+    <p>His borrowed time ends. Before the light takes him, he shows Sasuke everything — the whole truth, with no more lies between them.</p>
+  </header>
+  <figure class="ph dissolve-fig" data-k="別" data-reveal style="--ar:16/9">
+    <img src="assets/img/ch12-dissolve.png" alt="Itachi dissolving into a flock of crows and light" loading="lazy" onerror="this.remove()">
+  </figure>
+  <blockquote class="final-quote" aria-label="You don't have to forgive me. But no matter what you do from now on — I will love you forever.">
+    <span class="fq-line">You don't have to forgive me.</span>
+    <span class="fq-line">But no matter what you do from now on —</span>
+    <span class="fq-line red">I will love you forever.</span>
+  </blockquote>
+</section>
+
+<!-- ══════════ 13 · EPILOGUE ══════════ -->
+<section class="sec sec-epilogue" id="ch-epilogue" data-chapter="Epilogue" data-kanji="志">
+  <figure class="ph kenburns" data-k="暁" data-reveal style="--ar:16/9">
+    <img src="assets/img/ch13-dawn.png" alt="Dawn breaking over the village, the moon fading" loading="lazy" onerror="this.remove()">
+  </figure>
+  <div class="chap-text center" data-reveal>
+    <h2 class="chap-title"><em>Epilogue</em>The Shadow of the Leaf</h2>
+    <p>No statue stands for him. No page in the ledger of heroes.</p>
+    <p>He chose to be the villain of the story — so that the story could go on.</p>
+    <p class="big-line">The truest shinobi guard the peace<br><strong>from inside the shadows.</strong></p>
+  </div>
+  <footer class="credits" data-reveal>
+    <p>An unofficial, non-commercial fan tribute.</p>
+    <p><em>Naruto</em> © Masashi Kishimoto · Shueisha · Studio Pierrot. No affiliation.</p>
+    <p>Illustrations generated with free AI tools · story site built with GSAP ScrollTrigger &amp; Lenis.</p>
+    <p class="credits-kanji">忍</p>
+  </footer>
+</section>
+
+</main>
+
+<div id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Illustration viewer">
+  <figure><img id="lb-img" alt=""><figcaption id="lb-cap"></figcaption></figure>
+  <button id="lb-close" aria-label="Close viewer">✕</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.4/dist/lenis.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
